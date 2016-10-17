@@ -1,0 +1,4 @@
+RewriteEngine On
+RewriteBase /api/adobe-connect/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule . index.php [L]
