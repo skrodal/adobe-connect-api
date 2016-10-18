@@ -32,6 +32,10 @@
 			### ROUTES
 			$this->declareServiceRoutes();
 			$this->declareMeRoutes();
+			$this->declareRoomsRoutes();
+			$this->declareMeetingsRoutes();
+			$this->declareUsersRoutes();
+
 			if($this->dataporten->isSuperAdmin()) {
 				$this->declareAdminRoutes();
 				$this->declareDevRoutes();
@@ -62,7 +66,7 @@
 		/**
 		 *
 		 */
-		private function declareMeRoutes(){
+		private function declareMeRoutes() {
 			$this->altoRouter->addRoutes([
 				// List all routes
 				array('GET', '/me/', function () {
@@ -71,18 +75,39 @@
 			]);
 		}
 
+		private function declareRoomsRoutes() {
+
+		}
+
+		private function declareMeetingsRoutes() {
+
+		}
+
+		private function declareUsersRoutes() {
+			$this->altoRouter->addRoutes([
+				array('GET', '/users/count/', function () {
+					$response = $this->connect->getUserCount();
+					Response::result($response);
+				}, 'Total number of user accounts.'),
+			    //
+				array('GET', '/users/[org:orgName]/count/', function ($orgName) {
+					$response = $this->connect->getUserCount($orgName);
+					Response::result($response);
+				}, 'Total number of user accounts pertaining to a specific org.')
+			]);
+		}
+
 		/**
 		 *
 		 */
 		private function declareAdminRoutes() {
 			$this->altoRouter->addRoutes([
-				array('GET', '/user/[user:userName]/', function ($userName) {
+				array('GET', '/users/[user:userName]/', function ($userName) {
 					$response = $this->connect->getUserInfo($userName);
 					Response::result($response);
 				}, 'Account details pertaining to a specific user.')
 			]);
 		}
-
 
 		/**
 		 * DEV PATHS - ONLY AVAILABLE IF LOGGED ON USER IS FROM UNINETT
@@ -90,12 +115,11 @@
 		private function declareDevRoutes() {
 			$this->altoRouter->addRoutes([
 				array('GET', '/dev/', function () {
-					$response = null;
+					$response = NULL;
 					Response::result($response);
 				}, 'Dev route to test.'),
 			]);
 		}
-
 
 		private function matchRoutes() {
 			$match = $this->altoRouter->match();
@@ -106,6 +130,4 @@
 				Response::error(404, "Requested resource does not exist.");
 			}
 		}
-
-
 	}

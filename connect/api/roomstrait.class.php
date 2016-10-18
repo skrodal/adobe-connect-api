@@ -4,4 +4,7 @@
 
 	trait RoomsTrait {
 
+		function getRoomCount() {}
+
+
 	}

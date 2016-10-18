@@ -25,7 +25,6 @@
 			// Will exit on fail
 			$this->config     = Config::getConfigFromFile(Config::get('auth')['adobe_connect']);
 			$this->dataporten = $dataPorten;
-
 			// Todo: run a usercheck (org)
 		}
 
@@ -38,7 +37,6 @@
 		 */
 		private function callConnectApi($params = array()) {
 			$params['session'] = $this->getSessionAuthCookie();
-
 			$url = $this->config['connect-api-base'] . http_build_query($params);
 			$xml = false;
 			try {
@@ -49,7 +47,9 @@
 			if(!$xml) {
 				Response::error(400, 'API request returned no data.');
 			}
-
+			if(strcasecmp((string)$xml->status['code'], "ok") !== 0) {
+				Response::error(400, 'Request [' . $params['action'] . '] failed: ' . (string)$response->status['subcode']);
+			}
 			return $xml;
 		}
 
