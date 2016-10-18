@@ -13,9 +13,6 @@
 	use Connect\Utils\Response;
 	use Connect\Utils\Utils;
 
-	// We use session to store auth cookie from AC
-	session_start();
-
 	class Connect {
 		private $dataporten, $config;
 		use ServiceTrait, OrgsTrait, MeetingsTrait, RoomsTrait, UsersTrait;

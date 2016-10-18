@@ -45,7 +45,7 @@
 			}
 
 			$response  = $this->callConnectApi($request);
-			$userCount = count($response['principal-list']['principal']);
+			$userCount = count($response->{'principal-list'}->principal);
 
 			return $userCount;
 		}
