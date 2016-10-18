@@ -7,9 +7,8 @@
 	 */
 
 	namespace Connect\Api;
-
-	use Connect\Api\Connect\Meetings;
-	use Connect\Api\Connect\Rooms;
+	
+	use Connect\Api\Connect\User;
 	use Connect\Auth\Dataporten;
 	use Connect\Conf\Config;
 	use Connect\Utils\Response;
@@ -19,8 +18,8 @@
 
 	class Connect {
 		private $dataporten, $config;
+		use User;
 		// Traits
-		use \Service, \Org, \User, \Meetings, \Rooms;
 		function __construct(Dataporten $dataPorten) {
 			// Will exit on fail
 			$this->config     = Config::getConfigFromFile(Config::get('auth')['adobe_connect']);
