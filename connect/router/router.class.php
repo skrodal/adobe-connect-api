@@ -24,6 +24,7 @@
 			### ALTO ROUTER
 			$this->altoRouter = new AltoRouter();
 			$this->altoRouter->setBasePath(Config::get('altoRouter')['api_base_path']);
+			$this->altorouter->addMatchTypes(array('user' => '[0-9A-Za-z.@]++', 'org' => '[0-9A-Za-z.]++'));
 			### DATAPORTEN
 			$this->dataporten = new Dataporten();
 			### CONNECT
@@ -78,7 +79,7 @@
 				array('GET', '/user/[user:userName]/', function ($userName) {
 					$response = $this->connect->getUserInfo($userName);
 					Response::result($response);
-				}, 'Account details pertaining to a specific user.'),
+				}, 'Account details pertaining to a specific user.')
 			]);
 		}
 
@@ -102,7 +103,7 @@
 			if($match && is_callable($match['target'])) {
 				call_user_func_array($match['target'], $match['params']);
 			} else {
-				Response::error(404, "URLen det spørres etter finnes ikke.");
+				Response::error(404, "Requested resource does not exist.");
 			}
 		}
 
