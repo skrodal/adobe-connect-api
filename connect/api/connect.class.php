@@ -8,68 +8,29 @@
 
 	namespace Connect\Api;
 
+	use Connect\Api\Connect\Meetings;
+	use Connect\Api\Connect\Rooms;
 	use Connect\Auth\Dataporten;
 	use Connect\Conf\Config;
 	use Connect\Utils\Response;
 	use Connect\Utils\Utils;
+	use Connect\Api\Connect\Service;
+	use Connect\Api\Connect\Org;
+	use Connect\Api\Connect\User;
 
 	// We use session to store auth cookie from AC
 	session_start();
 
 	class Connect {
 		private $dataporten, $config;
-
+		// Traits
+		use Service, Org, User, Meetings, Rooms;
 		function __construct(Dataporten $dataPorten) {
 			// Will exit on fail
 			$this->config     = Config::getConfigFromFile(Config::get('auth')['adobe_connect']);
 			$this->dataporten = $dataPorten;
 			// Todo: run a usercheck (org)
 		}
-
-		/**
-		 * @return string
-		 */
-		public function getVersion(){
-			$apiCommonInfo = $this->callConnectApi(array('action' => 'common-info'));
-			return (string)$apiCommonInfo->common->version;
-		}
-
-		public function getUserCount(){
-
-		}
-
-		/**
-		 * If no user specified (or user is not SuperAdmin), request details for logged on user.
-		 * @param $username
-		 * @return array|bool
-		 */
-		public function getUserInfo($username = null) {
-			if(!$this->dataporten->isSuperAdmin() || is_null($username)){
-				$username = $this->dataporten->feideUsername();
-			}
-			// Lookup account info for requested user
-			$apiUserInfoResponse = $this->callConnectApi(
-				array(
-					'action'       => 'principal-list',
-					'filter-login' => $username
-				)
-			);
-			// Exit on error
-			if(strcasecmp((string)$apiUserInfoResponse->status['code'], "ok") !== 0) {
-				Response::error(400, 'User lookup failed: ' . $username . ': ' . (string)$apiUserInfoResponse->status['subcode']);
-			}
-			// Ok search, but user does not exist (judged by missing metadata)
-			if(!isset($apiUserInfoResponse->{'principal-list'}->principal)) {
-				Response::error(404, 'User ' . $username . ' not found');
-			}
-			// Done :-)
-			return array(
-				'principal_id'  => (string)$apiUserInfoResponse->{'principal-list'}->principal['principal-id'],
-				'username'      => (string)$apiUserInfoResponse->{'principal-list'}->principal->login,
-				'response_full' => $apiUserInfoResponse
-			);
-		}
-
 
 		/**
 		 * Utility function for AC API calls.
