@@ -50,6 +50,7 @@
 			if(strcasecmp((string)$xml->status['code'], "ok") !== 0) {
 				Response::error(400, 'Request [' . $params['action'] . '] failed: ' . (string)$xml->status['subcode']);
 			}
+			error_log($params['session']);
 			return $xml;
 		}
 
