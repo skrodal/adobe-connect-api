@@ -1,6 +1,6 @@
 <?php
 
-	namespace Connect\Api\Connect;
+	namespace Connect\Api;
 
 	trait Service {
 

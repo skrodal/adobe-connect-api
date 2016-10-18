@@ -8,7 +8,6 @@
 
 	namespace Connect\Api;
 
-	use Connect\Api\Connect\User;
 	use Connect\Auth\Dataporten;
 	use Connect\Conf\Config;
 	use Connect\Utils\Response;
