@@ -1,6 +1,7 @@
 <?php
 
 	namespace Connect\Api;
-	trait Rooms {
+
+	trait MeetingsTrait {
 
 	}

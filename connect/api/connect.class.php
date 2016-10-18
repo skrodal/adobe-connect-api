@@ -18,7 +18,7 @@
 
 	class Connect {
 		private $dataporten, $config;
-		use UserTrait;
+		use ServiceTrait, OrgsTrait, MeetingsTrait, RoomsTrait, UsersTrait;
 
 		// Traits
 		function __construct(Dataporten $dataPorten) {

@@ -2,7 +2,7 @@
 
 	namespace Connect\Api;
 
-	trait UserTrait {
+	trait UsersTrait {
 		/**
 		 * If no user specified (or user is not SuperAdmin), request details for logged on user.
 		 *

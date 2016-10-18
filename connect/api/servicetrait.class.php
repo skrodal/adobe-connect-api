@@ -2,7 +2,7 @@
 
 	namespace Connect\Api;
 
-	trait Service {
+	trait ServiceTrait {
 
 		/**
 		 * @return string
