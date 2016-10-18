@@ -26,9 +26,13 @@
 			$this->altoRouter->setBasePath(Config::get('altoRouter')['api_base_path']);
 			### DATAPORTEN
 			$this->dataporten = new Dataporten();
-			// Make all GET routes available
-			$this->declareGetRoutes();
+			### CONNECT
+			$this->connect = new Connect($this->dataporten);
+			### ROUTES
+			$this->declareServiceRoutes();
+			$this->declareMeRoutes();
 			if($this->dataporten->isSuperAdmin()) {
+				$this->declareAdminRoutes();
 				$this->declareDevRoutes();
 			}
 			// Activate routes
@@ -41,7 +45,7 @@
 		 *
 		 * @return string
 		 */
-		private function declareGetRoutes() {
+		private function declareServiceRoutes() {
 			$this->altoRouter->addRoutes([
 				// List all routes
 				array('GET', '/', function () {
@@ -49,17 +53,38 @@
 				}, 'All available routes.'),
 				//
 				array('GET', '/service/version/', function () {
-					$this->connect = new Connect($this->dataporten);
 					Response::result($this->connect->getVersion());
 				}, 'Adobe Connect version.'),
+			]);
+		}
+
+		/**
+		 *
+		 */
+		private function declareMeRoutes(){
+			$this->altoRouter->addRoutes([
+				// List all routes
+				array('GET', '/me/', function () {
+					Response::result($this->connect->getUserInfo());
+				}, 'Account details pertaining to logged on user.')
+			]);
+		}
+
+		/**
+		 *
+		 */
+		private function declareAdminRoutes() {
+			$this->altoRouter->addRoutes([
+				array('GET', '/user/[user:userName]/', function ($userName) {
+					$response = $this->connect->getUserInfo($userName);
+					Response::result($response);
+				}, 'Account details pertaining to a specific user.'),
 			]);
 		}
 
 
 		/**
 		 * DEV PATHS - ONLY AVAILABLE IF LOGGED ON USER IS FROM UNINETT
-		 *
-		 * @return string
 		 */
 		private function declareDevRoutes() {
 			$this->altoRouter->addRoutes([
