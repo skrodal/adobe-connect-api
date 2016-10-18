@@ -48,7 +48,7 @@
 				Response::error(400, 'API request returned no data.');
 			}
 			if(strcasecmp((string)$xml->status['code'], "ok") !== 0) {
-				Response::error(400, 'Request [' . $params['action'] . '] failed: ' . (string)$response->status['subcode']);
+				Response::error(400, 'Request [' . $params['action'] . '] failed: ' . (string)$xml->status['subcode']);
 			}
 			return $xml;
 		}
