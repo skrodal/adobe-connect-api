@@ -8,16 +8,19 @@
 
 	namespace Connect\Api;
 
+	use Connect\Api\Connect\User;
 	use Connect\Auth\Dataporten;
 	use Connect\Conf\Config;
 	use Connect\Utils\Response;
 	use Connect\Utils\Utils;
+
 	// We use session to store auth cookie from AC
 	session_start();
 
 	class Connect {
 		private $dataporten, $config;
 		use User;
+
 		// Traits
 		function __construct(Dataporten $dataPorten) {
 			// Will exit on fail
@@ -46,6 +49,7 @@
 			if(!$xml) {
 				Response::error(400, 'API request returned no data.');
 			}
+
 			return $xml;
 		}
 

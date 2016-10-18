@@ -1,6 +1,6 @@
 <?php
 
-	namespace Connect\Api;
+	namespace Connect\Api\Connect;
 
 	trait User {
 
