@@ -6,7 +6,7 @@
 		'vendor',
 		'auth',
 		'api',
-		'api'.PATH_SEPARATOR.'connect',
+		'api/connect',
 		'router'
 	);
 	// Add the paths to the class directories to the include path.
