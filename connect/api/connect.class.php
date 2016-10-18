@@ -37,6 +37,7 @@
 		 */
 		private function callConnectApi($params = array()) {
 			$params['session'] = $this->getSessionAuthCookie();
+			Utils::log($params['session']);
 			$url = $this->config['connect-api-base'] . http_build_query($params);
 			$xml = false;
 			try {
@@ -50,7 +51,6 @@
 			if(strcasecmp((string)$xml->status['code'], "ok") !== 0) {
 				Response::error(400, 'Request [' . $params['action'] . '] failed: ' . (string)$xml->status['subcode']);
 			}
-			error_log($params['session']);
 			return $xml;
 		}
 
