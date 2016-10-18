@@ -2,8 +2,7 @@
 
 	namespace Connect\Api;
 
-	trait User {
-
+	trait UserTrait {
 		/**
 		 * If no user specified (or user is not SuperAdmin), request details for logged on user.
 		 *
@@ -14,6 +13,7 @@
 		public function getUserInfo($username = NULL) {
 			if(!$this->dataporten->isSuperAdmin() || is_null($username)) {
 				$username = $this->dataporten->feideUsername();
+
 			}
 			// Lookup account info for requested user
 			$apiUserInfoResponse = $this->callConnectApi(

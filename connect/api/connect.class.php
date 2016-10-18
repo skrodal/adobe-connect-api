@@ -18,13 +18,14 @@
 
 	class Connect {
 		private $dataporten, $config;
-		use User;
+		use UserTrait;
 
 		// Traits
 		function __construct(Dataporten $dataPorten) {
 			// Will exit on fail
 			$this->config     = Config::getConfigFromFile(Config::get('auth')['adobe_connect']);
 			$this->dataporten = $dataPorten;
+
 			// Todo: run a usercheck (org)
 		}
 

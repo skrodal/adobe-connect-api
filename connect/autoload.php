@@ -18,6 +18,6 @@
 	spl_autoload_register();
 	//
 */
-	spl_autoload_extensions(".class.php, .trait.php"); // comma-separated list
+	spl_autoload_extensions(".class.php"); // comma-separated list
 	spl_autoload_register();
 	require_once('connect/config.php');
