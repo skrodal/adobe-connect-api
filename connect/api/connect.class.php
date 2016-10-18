@@ -14,17 +14,13 @@
 	use Connect\Conf\Config;
 	use Connect\Utils\Response;
 	use Connect\Utils\Utils;
-	use Connect\Api\Connect\Service;
-	use Connect\Api\Connect\Org;
-	use Connect\Api\Connect\User;
-
 	// We use session to store auth cookie from AC
 	session_start();
 
 	class Connect {
 		private $dataporten, $config;
 		// Traits
-		use Service, Org, User, Meetings, Rooms;
+		use \Service, \Org, \User, \Meetings, \Rooms;
 		function __construct(Dataporten $dataPorten) {
 			// Will exit on fail
 			$this->config     = Config::getConfigFromFile(Config::get('auth')['adobe_connect']);
