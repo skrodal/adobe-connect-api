@@ -6,12 +6,14 @@
 		'vendor',
 		'auth',
 		'api',
+		'api'.PATH_SEPARATOR.'connect',
 		'router'
 	);
 	// Add the paths to the class directories to the include path.
 	set_include_path(dirname(__DIR__) . PATH_SEPARATOR . implode(PATH_SEPARATOR, $paths));
+	error_log(dirname(__DIR__) . PATH_SEPARATOR . implode(PATH_SEPARATOR, $paths));
 	// Add the file extensions to the SPL.
-	spl_autoload_extensions(".trait.php, .class.php");
+	spl_autoload_extensions(".class.php, .trait.php");
 	// Register the default autoloader implementation in the php engine.
 	spl_autoload_register();
 	//
