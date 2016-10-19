@@ -127,7 +127,7 @@
 					Response::result($this->connect->userInfo());
 				}, 'Account details pertaining to logged on user.'),
 
-				array('GET', '/users/[user:userName]/', function ($userName) {
+				array('GET', '/user/[user:userName]/', function ($userName) {
 					$response = $this->connect->userInfo($userName);
 					Response::result($response);
 				}, 'Account details pertaining to a specific user.'),
