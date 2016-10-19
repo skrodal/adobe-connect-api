@@ -4,8 +4,6 @@
 
 	trait RoomsTrait {
 		/**
-		 * TODO: Wire
-		 *
 		 * Total count or number of rooms created in the last $days
 		 *
 		 * @param null $days

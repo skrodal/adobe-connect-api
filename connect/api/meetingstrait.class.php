@@ -5,8 +5,6 @@
 	trait MeetingsTrait {
 
 		/**
-		 * TODO: Wire
-		 *
 		 * Active meetings right now
 		 * @return int
 		 */
@@ -17,7 +15,6 @@
 		}
 
 		/**
-		 * TODO: Wire
 		 * NOTE: The call returns only users who logged in to the meeting as participants, not users who entered as guests.
 		 *
 		 * @param $start_timestamp

@@ -95,7 +95,7 @@
 				array('GET', '/rooms/count/', function () {
 					Response::result($this->connect->roomsCount());
 				}, 'Total number of rooms on the service'),
-				array('GET', '/rooms/new-since-days/[i:since_days]/count/', function ($since_days) {
+				array('GET', '/rooms/count/since-days/[i:since_days]/', function ($since_days) {
 					Response::result($this->connect->roomsCount($since_days));
 				}, 'Total number of new rooms in the last days'),
 			]);

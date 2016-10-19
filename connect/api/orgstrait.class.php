@@ -5,8 +5,6 @@
 	trait OrgsTrait {
 
 		/**
-		 * TODO: Wire
-		 *
 		 * Sorted list with { org.no : usercount }
 		 *
 		 * @return array
