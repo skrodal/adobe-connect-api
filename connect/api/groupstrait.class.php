@@ -19,7 +19,7 @@
 			// Make a list of unique orgs
 			foreach($response->{'principal-list'}->principal as $group) {
 				if($orgsOnly == false) {
-					$groupList[] = $group->name;
+					$groupList[] = (string)$group->name;
 					continue;
 				}
 				// If only orgs should be returned:
