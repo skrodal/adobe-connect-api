@@ -2,6 +2,8 @@
 
 	namespace Connect\Api;
 
+	use Connect\Utils\Response;
+
 	trait UsersTrait {
 		/**
 		 * If no user specified (or user is not SuperAdmin), request details for logged on user.

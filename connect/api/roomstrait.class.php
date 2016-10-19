@@ -3,7 +3,6 @@
 	namespace Connect\Api;
 
 	trait RoomsTrait {
-
 		/**
 		 * TODO: Wire
 		 *
