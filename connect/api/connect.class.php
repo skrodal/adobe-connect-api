@@ -5,7 +5,6 @@
 	 * @author Simon Skrødal
 	 * @since  October 2016
 	 */
-
 	namespace Connect\Api;
 	//
 	session_start();
