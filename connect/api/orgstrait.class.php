@@ -4,7 +4,6 @@
 
 	trait OrgsTrait {
 
-
 		/**
 		 * TODO: Wire
 		 *

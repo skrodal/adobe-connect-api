@@ -1,6 +1,5 @@
 <?php
 	use Connect\Conf\Config;
-
 	// NOTE: Path below must be changed to point to config files' location!
 	$configRoot = '/var/www/etc/adobe-connect/';
 	// Remember to update .htacces as well:

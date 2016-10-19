@@ -26,5 +26,4 @@
 			return count($response->{'report-bulk-objects'}->row);
 
 		}
-
 	}

@@ -52,8 +52,6 @@
 			return $response;
 		}
 
-		// <status code="no-access" subcode="no-login"/>
-
 		/**
 		 * Authenticate API user on AC service and grab returned cookie. If auth already in place, return cookie.
 		 *

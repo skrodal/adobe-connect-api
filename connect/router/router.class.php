@@ -15,7 +15,6 @@
 	use Connect\Utils\Response;
 	use Connect\Vendor\AltoRouter;
 
-
 	class Router {
 
 		private $altoRouter, $connect, $dataporten;

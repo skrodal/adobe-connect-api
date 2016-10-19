@@ -3,7 +3,6 @@
 	namespace Connect\Api;
 
 	trait GroupsTrait {
-
 		/**
 		 * TODO: Wire
 		 * Get a list of all groups (or $orgsOnly = true for unique orgs using the service).

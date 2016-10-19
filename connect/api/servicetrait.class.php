@@ -1,5 +1,4 @@
 <?php
-
 	namespace Connect\Api;
 
 	trait ServiceTrait {
