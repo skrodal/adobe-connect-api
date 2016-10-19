@@ -13,7 +13,7 @@
 		 */
 		public function groupsList($orgsOnly = false) {
 			$request   = ['action' => 'principal-list', 'filter-type' => 'group'];
-			$response  = callConnectApi($request);
+			$response  = $this->callConnectApi($request);
 			$groupList = [];
 
 			// Make a list of unique orgs

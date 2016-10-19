@@ -61,7 +61,7 @@
 		public function usersMaxConcurrent($days = NULL) {
 			$request           = ['action' => 'report-meeting-concurrent-users'];
 			$request['length'] = is_null($days) ? 7 : $days;
-			$response          = callConnectApi($request);
+			$response          = $this->callConnectApi($request);
 
 			return [
 				'count'      => $response->{'report-meeting-concurrent-users'}->attributes()->{'max-users'},
