@@ -23,7 +23,7 @@
 			$config = file_get_contents($file);
 			// Sanity
 			if($config === false) {
-				Response::error(404, 'En feil oppstod i samtale med tjener: Config not found');
+				Response::error(500, "The service is broken - could not find its own configuration file");
 			}
 
 			return json_decode($config, true);

@@ -11,16 +11,16 @@
 		 *
 		 * @return array|bool
 		 */
-		public function getUserInfo($username = NULL) {
+		public function userInfo($username = NULL) {
 			if(!$this->dataporten->isSuperAdmin() || is_null($username)) {
 				$username = $this->dataporten->feideUsername();
 			}
-			$request = array('action' => 'principal-list', 'filter-login' => $username);
+			$request = ['action' => 'principal-list', 'filter-login' => $username];
 			// Lookup account info for requested user
 			$response = $this->callConnectApi($request);
 			// Ok search, but user does not exist (judged by missing metadata)
 			if(!isset($response->{'principal-list'}->principal)) {
-				Response::error(404, 'User ' . $username . ' not found');
+				Response::error(404, "User $username not found");
 			}
 
 			return $response;
@@ -34,8 +34,8 @@
 		 *
 		 * @return int
 		 */
-		public function getUserCount($org = NULL) {
-			$request = array('action' => 'principal-list', 'filter-type' => 'user');
+		public function usersCount($org = NULL) {
+			$request = ['action' => 'principal-list', 'filter-type' => 'user'];
 			// Ensure that non-SuperAdmins can only make request for home org
 			if(!$this->dataporten->isSuperAdmin() && !is_null($org)) {
 				$org = $this->dataporten->userOrgId();
@@ -48,5 +48,24 @@
 			$userCount = count($response->{'principal-list'}->principal);
 
 			return $userCount;
+		}
+
+		/**
+		 * TODO: Wire
+		 *
+		 * @param null $days
+		 *
+		 * @return array
+		 */
+		public function usersMaxConcurrent($days = NULL) {
+			$request           = ['action' => 'report-meeting-concurrent-users'];
+			$request['length'] = is_null($days) ? 7 : $days;
+			$response          = callConnectApi($request);
+
+			return [
+				'count'      => $response->{'report-meeting-concurrent-users'}->attributes()->{'max-users'},
+				'frequency'  => $response->{'report-meeting-concurrent-users'}->attributes()->{'max-participants-freq'},
+				'since_days' => $days
+			];
 		}
 	}

@@ -12,7 +12,7 @@
 
 	class Dataporten {
 
-		private $config, $userGroups;
+		private $config; // $userGroups;
 
 		// private $userInfo;
 
@@ -25,12 +25,12 @@
 			$this->checkGateKeeperCredentials();
 			// Will exit if client does not have required scope
 			if(!$this->hasDataportenScope('admin')) {
-				Response::error(403, 'Tjenesten mangler nødvendige rettigheter (scope) for å kunne fortsette.');
+				Response::error(403, "Client is missing required Dataporten scope(s) to access this API");
 			};
 			// Endpoint /userinfo/
 			// $this->userInfo = $this->getUserInfo();
 			// Endpoint /groups/me/groups/
-			$this->userGroups = $this->getUserGroups();
+			//$this->userGroups = $this->getUserGroups();
 		}
 
 		private function checkCORS() {
@@ -42,7 +42,7 @@
 
 		private function checkGateKeeperCredentials() {
 			if(empty($_SERVER["PHP_AUTH_USER"]) || empty($_SERVER["PHP_AUTH_PW"])) {
-				Response::error(401, 'Unauthorized (Missing API Gatekeeper Credentials)');
+				Response::error(401, "Unauthorized (Missing Dataporten API Gatekeeper Credentials)");
 			}
 
 			// Gatekeeper. user/pwd is passed along by the Dataporten Gatekeeper and must matched that of the registered API:
@@ -50,7 +50,7 @@
 				(strcmp($_SERVER["PHP_AUTH_PW"], $this->config['passwd']) !== 0)
 			) {
 				// The status code will be set in the header
-				Response::error(401, 'Unauthorized (Incorrect API Gatekeeper Credentials)');
+				Response::error(401, "Unauthorized (Incorrect Dataporten API Gatekeeper Credentials)");
 			}
 		}
 
@@ -69,15 +69,16 @@
 		public function getUserInfo() {
 			return $this->protectedRequest('https://auth.dataporten.no/userinfo')['user'];
 		}
-		*/
+
 		public function getUserGroups() {
-			return $this->protectedRequest('https://groups-api.dataporten.no/groups/me/groups?query=fc:org');
+			return $this->protectedRequest("https://groups-api.dataporten.no/groups/me/groups?query=fc:org");
 		}
+
 
 		private function protectedRequest($url) {
 			$token = $_SERVER['HTTP_X_DATAPORTEN_TOKEN'];
 			if(empty($token)) {
-				Response::error(403, "Tjenesten fikk ikke tilgang til å hente brukerinfo.");
+				Response::error(403, "Access denied: Dataporten token missing.");
 			}
 
 			$opts    = array(
@@ -89,33 +90,33 @@
 			$context = stream_context_create($opts);
 			$result  = file_get_contents($url, false, $context);
 
-
 			$data = json_decode($result, true);
 			if(empty($data)) {
-				Response::error(204, "Tjenesten fant ikke noe informasjon om din (Feide) bruker.");
+				Response::error(404, "Could not find your Dataporten group memberships");
 			}
 
 			return $data;
 		}
-
-		public function userAffiliation() {
-			$affiliation = NULL;
-			foreach($this->userGroups as $group) {
-				if($group['type'] === 'fc:org') {
-					if(!empty($group['membership']['primaryAffiliation'])) {
-						return trim(strtolower($group['membership']['primaryAffiliation']));
+		*/
+		/* Not used
+			public function userAffiliation() {
+				$affiliation = NULL;
+				foreach($this->userGroups as $group) {
+					if($group['type'] === 'fc:org') {
+						if(!empty($group['membership']['primaryAffiliation'])) {
+							return trim(strtolower($group['membership']['primaryAffiliation']));
+						}
 					}
 				}
+				//
+				Response::error(401, "Your Feide affiliation was not found by the service ('primaryAffiliation')");
 			}
-			//
-			Response::error(401, "Tjenesten fikk ikke tilgang til din tilhørighet fra Feide ('primaryAffiliation').");
-		}
 
-		/* Not used
-		public function userDisplayName() {
-			return $this->userInfo['name'];
-		}
-		*/
+
+			public function userDisplayName() {
+				return $this->userInfo['name'];
+			}
+			*/
 
 		/* Not used
 		public function userFirstName() {
@@ -135,7 +136,7 @@
 
 		public function userOrgId() {
 			$userOrg = explode('@', $this->feideUsername());
-
+			// e.g. 'uninett.no'
 			return $userOrg[1];
 		}
 
@@ -145,7 +146,7 @@
 
 		private function getFeideUsername() {
 			if(!isset($_SERVER["HTTP_X_DATAPORTEN_USERID_SEC"])) {
-				Response::error(401, 'Tjenesten ble nektet tilgang (fikk ikke tak i ditt brukernavn)');
+				Response::error(401, "The service was not able to find your Feide user account");
 			}
 			$userIdSec = NULL;
 			// Get the username(s)
@@ -164,16 +165,17 @@
 			}
 			// No Feide...
 			if(!isset($userIdSec)) {
-				Response::error(401, 'Nektet tilgang (fikk ikke tak i ditt Feide brukernavn)');
+				Response::error(401, "The service was not able to find your Feide user account");
 			}
 
-			// 'username@org.no'
+			// e.g. 'username@org.no'
 			return $userIdSec;
 		}
 
 		public function userOrgName() {
 			$userOrg = explode('@', $this->feideUsername());
 			$userOrg = explode('.', $userOrg[1]);
+			// e.g. 'uninett'
 			return $userOrg[0];
 		}
 

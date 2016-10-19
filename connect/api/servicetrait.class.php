@@ -7,8 +7,8 @@
 		/**
 		 * @return string
 		 */
-		public function getVersion(){
-			$apiCommonInfo = $this->callConnectApi(array('action' => 'common-info'));
-			return (string)$apiCommonInfo->common->version;
+		public function serviceVersion(){
+			$response = $this->callConnectApi(array('action' => 'common-info'));
+			return (string)$response->common->version;
 		}
 	}

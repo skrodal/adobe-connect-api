@@ -7,6 +7,8 @@
 	 */
 	namespace Connect;
 
+	date_default_timezone_set('CET');
+
 	###	   LOAD DEPENDENCIES	###
 	require_once('connect/autoload.php');
 
