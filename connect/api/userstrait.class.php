@@ -58,13 +58,12 @@
 		 */
 		public function usersMaxConcurrent($days = NULL) {
 			$request           = ['action' => 'report-meeting-concurrent-users'];
-			$request['length'] = is_null($days) ? 7 : $days;
 			$response          = $this->callConnectApi($request);
 
 			return [
-				'count'      => $response->{'report-meeting-concurrent-users'}->attributes()->{'max-users'},
-				'frequency'  => $response->{'report-meeting-concurrent-users'}->attributes()->{'max-participants-freq'},
-				'since_days' => $days
+				'count'      => (string)$response->{'report-meeting-concurrent-users'}->attributes()->{'max-users'},
+				'frequency'  => (string)$response->{'report-meeting-concurrent-users'}->attributes()->{'max-participants-freq'},
+				'since_days' => $days ? $days : 'forever'
 			];
 		}
 
