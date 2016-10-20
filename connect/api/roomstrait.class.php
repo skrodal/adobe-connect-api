@@ -58,9 +58,9 @@
 			$folderId = $this->roomsUserFolderID($username);
 
 			$response = $this->callConnectApi(array('action'      => 'sco-contents',
-			                                 'sco-id'      => $folderId,
-			                                 'filter-rows' => 1,
-			                                 'filter-type' => 'meeting'
+			                                        'sco-id'      => $folderId,
+			                                        'filter-rows' => 1,
+			                                        'filter-type' => 'meeting'
 			));
 
 			$rooms = [];
@@ -80,6 +80,7 @@
 					$i++;
 				}
 			}
+
 			return $rooms;
 		}
 
@@ -95,14 +96,14 @@
 				$username = $this->dataporten->feideUsername();
 			}
 			$response = $this->callConnectApi(['action'      => 'sco-search-by-field',
-			                            'query'       => $username,
-			                            'field'       => 'name',
-			                            'filter-type' => 'folder'
+			                                   'query'       => $username,
+			                                   'field'       => 'name',
+			                                   'filter-type' => 'folder'
 			]);
 			if(isset($response->{'sco-search-by-field-info'}->sco)) {
 				foreach($response->{'sco-search-by-field-info'}->sco as $folder) {
 					if(strcasecmp((string)$folder->{'folder-name'}, "User Meetings") == 0) {
-						return (string)$folder->sco->attributes()->{'sco-id'};
+						return (string)$folder->attributes()->{'sco-id'};
 					}
 				}
 				Response::error(404, "No meetings folder found for user $username");

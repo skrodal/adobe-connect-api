@@ -137,7 +137,7 @@
 				}, 'All meeting rooms pertaining to the logged on user.'),
 				# Specific user
 				array('GET', '/user/[user:userName]/rooms/', function ($userName) {
-					$response = $this->connect->userInfo($userName);
+					$response = $this->connect->roomsUser($userName);
 					Response::result($response);
 				}, 'All meeting rooms pertaining to $username.'),
 				array('GET', '/user/[user:userName]/', function ($userName) {
