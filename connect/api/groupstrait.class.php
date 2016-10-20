@@ -53,7 +53,6 @@
 			$hosts         = [];
 			$i = 0;
 			foreach($responseRooms->row as $room) {
-				return (string)$room->attributes()->{'sco-id'};
 				$host = $this->callConnectApi(['action'               => 'permissions-info',
 				                               'acl-id'               => (string)$room->attributes()->{'sco-id'},
 				                               'filter-permission-id' => 'host'
