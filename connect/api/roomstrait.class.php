@@ -59,7 +59,6 @@
 
 			$response = $this->callConnectApi(array('action'      => 'sco-contents',
 			                                        'sco-id'      => $folderId,
-			                                        'filter-rows' => 1,
 			                                        'filter-type' => 'meeting'
 			));
 
