@@ -56,6 +56,7 @@
 				                               'acl-id'               => (string)$room->attributes()->{'sco-id'},
 				                               'filter-permission-id' => 'host'
 				]);
+
 				// User ID as key (to keep unique array)
 				$hosts[(string)$host->permissions->principal->attributes()->{'principal-id'}] = true;
 			}

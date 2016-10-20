@@ -98,9 +98,12 @@
 				array('GET', '/rooms/count/', function () {
 					Response::result($this->connect->roomsCount());
 				}, 'Total number of rooms on the service'),
-				array('GET', '/rooms/count/since-days/[i:since_days]/', function ($since_days) {
-					Response::result($this->connect->roomsCount($since_days));
-				}, 'Total number of new rooms in the last days'),
+				array('GET', '/rooms/count/from/[i:from]/to/[i:to]/', function ($from, $to) {
+					Response::result($this->connect->roomsPeriodCount($from, $to));
+				}, 'Total number of rooms created within the set period  (defined by timestamps)'),
+				array('GET', '/rooms/from/[i:from]/to/[i:to]/', function ($from, $to) {
+					Response::result($this->connect->roomsPeriod($from, $to));
+				}, 'Rooms created within the set period  (defined by timestamps)'),
 			]);
 		}
 
@@ -138,6 +141,14 @@
 					$response = $this->connect->usersCount();
 					Response::result($response);
 				}, 'Total number of user accounts.'),
+				array('GET', '/users/maxconcurrent/count/', function () {
+					$response = $this->connect->usersMaxConcurrent();
+					Response::result($response);
+				}, 'Max concurrent users on the service.'),
+				array('GET', '/users/maxconcurrent/count/[i:days]/', function ($days) {
+					$response = $this->connect->usersMaxConcurrent($days);
+					Response::result($response);
+				}, 'Max concurrent users on the service in the last {days}.'),
 				//
 				array('GET', '/users/[org:orgName]/count/', function ($orgName) {
 					$response = $this->connect->usersCount($orgName);

@@ -52,8 +52,6 @@
 		}
 
 		/**
-		 * TODO: Wire
-		 *
 		 * @param null $days
 		 *
 		 * @return array
