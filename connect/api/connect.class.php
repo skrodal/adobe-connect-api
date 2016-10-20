@@ -58,7 +58,7 @@
 		 */
 		private function getSessionAuthCookie() {
 			$_SESSION['timeout'] = isset($_SESSION['timeout']) ? $_SESSION['timeout'] : time();
-			if ($_SESSION['timeout'] + 10 * 60 < time()) {
+			if ($_SESSION['timeout'] + 10 * 60 > time()) {
 				$_SESSION['timeout'] = time();
 				unset($_SESSION['ac-auth-cookie']);
 			}
@@ -93,7 +93,7 @@
 						Response::error(400, "Request [$action] failed [$responseCode]: " . (string)$response->status->invalid->attributes()->subcode);
 						break;
 					case 'no-access'    :
-						Response::error(400, "Request [$action] failed: [$responseCode]" . (string)$response->status->attributes()->subcode);
+						Response::error(400, "Request [$action] failed: [$responseCode] " . (string)$response->status->attributes()->subcode);
 						break;
 					case 'no-data'      :
 						Response::error(400, "Request [$action] failed [$responseCode]: There is no data available (in response to an action that would normally result in returning data)");
