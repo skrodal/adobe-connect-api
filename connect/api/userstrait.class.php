@@ -24,7 +24,7 @@
 				Response::error(404, "User $username not found");
 			}
 
-			return $response->row;
+			return $response->{'report-bulk-users'}->row;
 		}
 
 
