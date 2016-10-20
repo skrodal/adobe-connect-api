@@ -120,6 +120,9 @@
 				array('GET', '/service/version/', function () {
 					Response::result($this->connect->serviceVersion());
 				}, 'Adobe Connect version.'),
+				array('GET', '/service/invitationurl/', function () {
+					Response::result($this->connect->serviceInvitationURL());
+				}, 'Dataporten invitation URL to the ConnectAdmin service.'),
 			]);
 		}
 
@@ -145,7 +148,7 @@
 					$response = $this->connect->usersMaxConcurrent();
 					Response::result($response);
 				}, 'Maximum number of users in Adobe Connect meetings concurrently in the last 30 days.'),
-				array('GET', '/users/maxconcurrent/count/[i:days]/', function ($days) {
+				array('GET', '/users/maxconcurrent/count/since-days/[i:days]/', function ($days) {
 					$response = $this->connect->usersMaxConcurrent($days);
 					Response::result($response);
 				}, 'Maximum number of users in Adobe Connect meetings concurrently in the last {days}.'),
