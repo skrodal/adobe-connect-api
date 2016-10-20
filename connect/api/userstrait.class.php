@@ -13,17 +13,20 @@
 		 * @return array|bool
 		 */
 		public function userInfo($username = NULL) {
+			$isMe = false;
 			if(!$this->dataporten->isSuperAdmin() || is_null($username)) {
 				$username = $this->dataporten->feideUsername();
+				$isMe = true;
 			}
 			$request = ['action' => 'report-bulk-users', 'filter-login' => $username];
 			// Lookup account info for requested user
 			$response = $this->callConnectApi($request);
 			// Ok search, but user does not exist (judged by missing metadata)
-			if(!isset($response->{'report-bulk-users'}->row)) {
+			if(!isset($response->{'report-bulk-users'}->row) && !$isMe) {
+				// Respond with not found error in case it's a user lookup
 				Response::error(404, "User $username not found");
 			}
-
+			// Empty response if request was /me/ and no user
 			return $response->{'report-bulk-users'}->row;
 		}
 

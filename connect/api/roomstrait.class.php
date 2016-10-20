@@ -51,6 +51,13 @@
 		}
 
 
+		/**
+		 * List all rooms belonging to a user.
+		 *
+		 * @param null $username
+		 *
+		 * @return array
+		 */
 		public function roomsUser($username = NULL) {
 			if(!$this->dataporten->isSuperAdmin() || is_null($username)) {
 				$username = $this->dataporten->feideUsername();
