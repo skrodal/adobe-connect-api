@@ -52,18 +52,25 @@
 		}
 
 		/**
-		 * @param null $days
+		 * Returns the maximum number of users in Adobe Connect meetings concurrently in the last $days,
+		 * and the number of times the maximum has been reached. The maximum is the peak number of users
+		 * in any meetings at a single moment, whether one meeting, multiple concurrent meetings, or multiple
+		 * overlapping meetings.
+		 *
+		 * Default days on the Adobe Connect service is 30. We can, however, override this.
+		 *
+		 * @param int $days
 		 *
 		 * @return array
 		 */
-		public function usersMaxConcurrent($days = NULL) {
-			$request           = ['action' => 'report-meeting-concurrent-users'];
-			$response          = $this->callConnectApi($request);
+		public function usersMaxConcurrent($days = 30) {
+			$request  = ['action' => 'report-meeting-concurrent-users', 'length' => $days];
+			$response = $this->callConnectApi($request);
 
 			return [
 				'count'      => (string)$response->{'report-meeting-concurrent-users'}->attributes()->{'max-users'},
 				'frequency'  => (string)$response->{'report-meeting-concurrent-users'}->attributes()->{'max-participants-freq'},
-				'since_days' => $days ? $days : 'forever'
+				'since_days' => $days
 			];
 		}
 

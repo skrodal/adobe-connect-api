@@ -144,11 +144,11 @@
 				array('GET', '/users/maxconcurrent/count/', function () {
 					$response = $this->connect->usersMaxConcurrent();
 					Response::result($response);
-				}, 'Max concurrent users on the service.'),
+				}, 'Maximum number of users in Adobe Connect meetings concurrently in the last 30 days.'),
 				array('GET', '/users/maxconcurrent/count/[i:days]/', function ($days) {
 					$response = $this->connect->usersMaxConcurrent($days);
 					Response::result($response);
-				}, 'Max concurrent users on the service in the last {days}.'),
+				}, 'Maximum number of users in Adobe Connect meetings concurrently in the last {days}.'),
 				//
 				array('GET', '/users/[org:orgName]/count/', function ($orgName) {
 					$response = $this->connect->usersCount($orgName);
