@@ -51,17 +51,14 @@
 			// All meeting rooms on server
 			$responseRooms = $this->_roomsAll();
 			$hosts         = [];
-			$i = 0;
 			foreach($responseRooms->row as $room) {
 				$host = $this->callConnectApi(['action'               => 'permissions-info',
 				                               'acl-id'               => (string)$room->attributes()->{'sco-id'},
 				                               'filter-permission-id' => 'host'
 				]);
-				$hosts[] = $host->permissions->principal->login;
-				if($i >= 10) {
-					break;
-				}
+				// User ID as key (to keep unique array)
+				$hosts[(string)$host->permissions->principal->attributes()->{'principal-id'}] = true;
 			}
-			return $hosts;
+			return count($hosts);
 		}
 	}
