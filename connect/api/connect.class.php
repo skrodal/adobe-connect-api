@@ -57,12 +57,6 @@
 		 * @return boolean
 		 */
 		private function getSessionAuthCookie() {
-			$_SESSION['timeout'] = isset($_SESSION['timeout']) ? $_SESSION['timeout'] : time();
-			if ($_SESSION['timeout'] + 10 * 60 > time()) {
-				$_SESSION['timeout'] = time();
-				unset($_SESSION['ac-auth-cookie']);
-			}
-
 			if(isset($_SESSION['ac-auth-cookie'])) {
 				return $_SESSION['ac-auth-cookie'];
 			}
