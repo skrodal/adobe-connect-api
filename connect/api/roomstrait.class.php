@@ -57,7 +57,7 @@
 			}
 			$folderId = $this->roomsUserFolderID($username);
 
-			$response = callConnectApi(array('action'      => 'sco-contents',
+			$response = $this->callConnectApi(array('action'      => 'sco-contents',
 			                                 'sco-id'      => $folderId,
 			                                 'filter-rows' => 1,
 			                                 'filter-type' => 'meeting'
@@ -94,7 +94,7 @@
 			if(!$this->dataporten->isSuperAdmin() || is_null($username)) {
 				$username = $this->dataporten->feideUsername();
 			}
-			$response = callConnectApi(['action'      => 'sco-search-by-field',
+			$response = $this->callConnectApi(['action'      => 'sco-search-by-field',
 			                            'query'       => $username,
 			                            'field'       => 'name',
 			                            'filter-type' => 'folder'

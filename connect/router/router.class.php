@@ -128,13 +128,14 @@
 		 */
 		private function declareUsersRoutes() {
 			$this->altoRouter->addRoutes([
-				// List all routes
+				# Logged on user
 				array('GET', '/me/', function () {
 					Response::result($this->connect->userInfo());
 				}, 'Account details pertaining to logged on user.'),
 				array('GET', '/me/rooms/', function () {
 					Response::result($this->connect->roomsUser());
 				}, 'All meeting rooms pertaining to the logged on user.'),
+				# Specific user
 				array('GET', '/user/[user:userName]/rooms/', function ($userName) {
 					$response = $this->connect->userInfo($userName);
 					Response::result($response);
@@ -143,6 +144,7 @@
 					$response = $this->connect->userInfo($userName);
 					Response::result($response);
 				}, 'Account details pertaining to a specific user.'),
+				# Generic users
 				array('GET', '/users/count/', function () {
 					$response = $this->connect->usersCount();
 					Response::result($response);
