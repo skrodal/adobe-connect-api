@@ -15,7 +15,7 @@
 		public function userInfo($username = NULL) {
 			$isMe = false;
 			if(!$this->dataporten->isSuperAdmin() || is_null($username)) {
-				$username = $this->dataporten->feideUsername();
+				$username = $this->dataporten->feideUsername() . 'assdffd';
 				$isMe = true;
 			}
 			$request = ['action' => 'report-bulk-users', 'filter-login' => $username];
