@@ -55,10 +55,7 @@
 				}, 'Sorted list of all organisations (groups) in the system'),
 				array('GET', '/groups/', function () {
 					Response::result($this->connect->groupsList());
-				}, 'Sorted list of all groups in the system'),
-				array('GET', '/groups/hosts/count/', function () {
-					Response::result($this->connect->groupsHostsCount());
-				}, 'Number of users on the system that have hosted one or more meetings'),
+				}, 'Sorted list of all groups in the system')
 			]);
 		}
 
@@ -135,7 +132,13 @@
 				array('GET', '/me/', function () {
 					Response::result($this->connect->userInfo());
 				}, 'Account details pertaining to logged on user.'),
-
+				array('GET', '/me/rooms/', function () {
+					Response::result($this->connect->roomsUser());
+				}, 'All meeting rooms pertaining to the logged on user.'),
+				array('GET', '/user/[user:userName]/rooms/', function ($userName) {
+					$response = $this->connect->userInfo($userName);
+					Response::result($response);
+				}, 'All meeting rooms pertaining to $username.'),
 				array('GET', '/user/[user:userName]/', function ($userName) {
 					$response = $this->connect->userInfo($userName);
 					Response::result($response);

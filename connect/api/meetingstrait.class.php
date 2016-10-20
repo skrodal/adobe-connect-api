@@ -1,6 +1,7 @@
 <?php
 
 	namespace Connect\Api;
+	use Connect\Utils\Response;
 
 	/**
 	 * Note: In this API, we refer to rooms/meetings differently than Adobe Connect Web Services:
@@ -71,6 +72,5 @@
 
 			return $uniqueRoomAndUserCount;
 		}
-
 
 	}
