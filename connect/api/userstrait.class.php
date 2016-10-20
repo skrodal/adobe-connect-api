@@ -16,15 +16,15 @@
 			if(!$this->dataporten->isSuperAdmin() || is_null($username)) {
 				$username = $this->dataporten->feideUsername();
 			}
-			$request = ['action' => 'principal-list', 'filter-login' => $username];
+			$request = ['action' => 'report-bulk-users', 'filter-login' => $username];
 			// Lookup account info for requested user
 			$response = $this->callConnectApi($request);
 			// Ok search, but user does not exist (judged by missing metadata)
-			if(!isset($response->{'principal-list'}->principal)) {
+			if(!isset($response->{'report-bulk-users'}->row)) {
 				Response::error(404, "User $username not found");
 			}
 
-			return $response;
+			return $response->row;
 		}
 
 
@@ -69,4 +69,5 @@
 				'since_days' => $days
 			];
 		}
+
 	}

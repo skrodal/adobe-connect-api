@@ -56,6 +56,9 @@
 				array('GET', '/groups/', function () {
 					Response::result($this->connect->groupsList());
 				}, 'Sorted list of all groups in the system'),
+				array('GET', '/groups/hosts/count/', function () {
+					Response::result($this->connect->groupsHostsCount());
+				}, 'Number of users on the system that have hosted one or more meetings'),
 			]);
 		}
 

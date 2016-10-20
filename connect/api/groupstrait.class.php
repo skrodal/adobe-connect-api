@@ -36,4 +36,32 @@
 
 			return $groupList;
 		}
+
+
+		/**
+		 * 1) Grab all rooms
+		 * 2) Find the principal-ids with a filter for `type` `host` using rooms's `sco-id` to get the `permissions-info`
+		 * 3) Loop through and grab only the first `principal-id`, which should be the original Host of the room
+		 *
+		 * @param null $org
+		 *
+		 * @return array
+		 */
+		function groupsHostsCount($org = NULL) {
+			// All meeting rooms on server
+			$responseRooms = $this->_roomsAll();
+			$hosts         = [];
+			$i = 0;
+			foreach($responseRooms->row as $room) {
+				$host = $this->callConnectApi(['action'               => 'permissions-info',
+				                               'acl-id'               => $room->attributes()->{'sco-id'},
+				                               'filter-permission-id' => 'host'
+				]);
+				$hosts[] = $host->permissions->principal->login;
+				if($i >= 10) {
+					break;
+				}
+			}
+			return $hosts;
+		}
 	}

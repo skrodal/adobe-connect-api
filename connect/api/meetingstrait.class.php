@@ -2,6 +2,15 @@
 
 	namespace Connect\Api;
 
+	/**
+	 * Note: In this API, we refer to rooms/meetings differently than Adobe Connect Web Services:
+	 *
+	 * This API     |   Adobe Connect Web Services
+	 * -------------------------------------------
+	 * Meeting      |   Session
+	 * Room         |   Meeting
+	 */
+
 	trait MeetingsTrait {
 
 		/**
