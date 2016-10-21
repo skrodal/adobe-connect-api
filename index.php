@@ -7,6 +7,9 @@
 	 */
 	namespace Connect;
 
+	session_start();
+
+
 	date_default_timezone_set('CET');
 
 	###	   LOAD DEPENDENCIES	###
@@ -17,3 +20,10 @@
 
 	// Init
 	$router = new Router();
+
+	if(!empty($_SESSION['test'])) {
+		Utils::log($_SESSION['test']);
+	} else {
+		$_SESSION['test'] = "Session is set";
+		Utils::log("SESSION NOT SET!");
+	}
