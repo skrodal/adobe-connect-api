@@ -117,9 +117,9 @@
 				array('GET', '/service/version/', function () {
 					Response::result($this->connect->serviceVersion());
 				}, 'Adobe Connect version.'),
-				array('GET', '/service/invitationurl/', function () {
-					Response::result($this->connect->serviceInvitationURL());
-				}, 'Dataporten invitation URL to the ConnectAdmin service (null if user is not already a member).'),
+				array('GET', '/service/access/', function () {
+					Response::result($this->connect->serviceAccessDetails());
+				}, 'Service user access, role and invitation URL to the ConnectAdmin service (null if user is not already a member).'),
 			]);
 		}
 

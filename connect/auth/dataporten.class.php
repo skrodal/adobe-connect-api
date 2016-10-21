@@ -72,13 +72,24 @@
 		}
 		*/
 
+		/**
+		 * Check membership in ConnectAdmin Dataporten group. Returns membership or false.
+		 * @return bool|mixed
+		 */
 		public function isConnectAdmin() {
 			$membership = $this->protectedRequest("https://groups-api.dataporten.no/groups/me/groups/" . $this->config['connect-group-id']);
 			return $membership;
 		}
 
+		/**
+		 * If member of ConnectAdmin Dataporten group, return invitation url
+		 * @return bool
+		 */
 		public function groupInvitationURL(){
-			return !$this->isConnectAdmin() ? false : $this->config['connect-group-invitation-url'];
+			if($this->isSuperAdmin() || $this->isConnectAdmin() !== false){
+				return $this->config['connect-group-invitation-url'];
+			}
+			return false;
 		}
 
 
@@ -96,7 +107,6 @@
 			);
 			$context = stream_context_create($opts);
 			$result  = file_get_contents($url, false, $context);
-			Utils::log(json_decode($result, true));
 			return $result ? json_decode($result, true) : false;
 		}
 		/* Not used

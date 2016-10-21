@@ -13,12 +13,23 @@
 		}
 
 		/**
-		 * Get invitation URL to the ConnectAdmin Dataporten group.
+		 * Get user (admin)roles and Dataporten group invitation (if member)
 		 *
-		 * Returns false if logged on user is not member of group.
 		 * @return mixed
 		 */
-		public function serviceInvitationURL() {
-			return $this->dataporten->groupInvitationURL();
+		public function serviceAccessDetails() {
+			$response = ['role' => 'Gjest', 'orgadmin' => false, 'superadmin' => false];
+			$url = $this->dataporten->groupInvitationURL();
+			if($url !== false){
+				$response['orgadmin'] = true;
+				$response['group-invitation'] = $url;
+				$response['role'] = 'OrgAdmin';
+			}
+			if($this->dataporten->isSuperAdmin()){
+				$response['superadmin'] = true;
+				$response['role'] = 'SuperAdmin';
+			}
+
+			return $response;
 		}
 	}
