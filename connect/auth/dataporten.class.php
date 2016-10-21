@@ -69,9 +69,18 @@
 		public function getUserInfo() {
 			return $this->protectedRequest('https://auth.dataporten.no/userinfo')['user'];
 		}
+		*/
 
-		public function getUserGroups() {
-			return $this->protectedRequest("https://groups-api.dataporten.no/groups/me/groups?query=fc:org");
+		public function isConnectAdmin() {
+			$membership = $this->protectedRequest("https://groups-api.dataporten.no/groups/me/groups?query=ConnectAdmin");
+			if (isset($membership['displayname'])){
+				return strcasecmp($membership['displayname'], 'ConnectAdmin') == 0 ? true : false;
+			}
+			return null;
+		}
+
+		public function groupInvitationURL(){
+			return is_null($this->isConnectAdmin()) ? null : $this->config['connect-group-invitation-url'];
 		}
 
 
@@ -89,15 +98,9 @@
 			);
 			$context = stream_context_create($opts);
 			$result  = file_get_contents($url, false, $context);
-
 			$data = json_decode($result, true);
-			if(empty($data)) {
-				Response::error(404, "Could not find your Dataporten group memberships");
-			}
-
 			return $data;
 		}
-		*/
 		/* Not used
 			public function userAffiliation() {
 				$affiliation = NULL;

@@ -40,6 +40,7 @@
 			                                                                   'filter-gt-date-created' => $range_start,
 			                                                                   'filter-lt-date-created' => $range_end
 			]);
+
 			$uniqueRoomAndUserCount['from_timestamp'] = (int)$start_timestamp;
 			$uniqueRoomAndUserCount['to_timestamp']   = (int)$end_timestamp;
 			$uniqueRoomAndUserCount['sessions']       = 0;
@@ -47,10 +48,22 @@
 			$uniqueRoomAndUserCount['users']          = [];
 			$uniqueRoomAndUserCount['duration_sec']   = 0;
 
+			$roomAndUserCountByDate = [];
+
 			// Collect info from each meeting
 			foreach($response->{'report-bulk-consolidated-transactions'}->row as $meeting) {
 				// Only count completed meetings
 				if(isset($meeting->{'date-closed'})) {
+					//
+					$meetingDate = date("d.m.Y", strtotime((string)$meeting->{'date-closed'}));
+					if(!isset($roomAndUserCountByDate[$meetingDate])){
+						$roomAndUserCountByDate[$meetingDate]['duration_sec'] = 0;
+						$roomAndUserCountByDate[$meetingDate]['rooms'] = [];
+						$roomAndUserCountByDate[$meetingDate]['users'] = [];
+						// TODO: LEGG TIL EN ARRAY PER DATO MED TELLER FOR BRUKERE/ROM/SESJONER/VARIGHET
+
+					}
+
 					// Add duration to total
 					$meetingDuration = abs(strtotime($meeting->{'date-closed'}) - strtotime($meeting->{'date-created'}));
 					$uniqueRoomAndUserCount['duration_sec'] += $meetingDuration;
@@ -69,6 +82,8 @@
 			$uniqueRoomAndUserCount['rooms']        = count($uniqueRoomAndUserCount['rooms']);
 			$uniqueRoomAndUserCount['users']        = count($uniqueRoomAndUserCount['users']);
 			$uniqueRoomAndUserCount['duration_sec'] = $uniqueRoomAndUserCount['duration_sec'];
+
+			$response['summary'] = $uniqueRoomAndUserCount;
 
 			return $uniqueRoomAndUserCount;
 		}

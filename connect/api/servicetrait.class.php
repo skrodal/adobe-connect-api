@@ -6,17 +6,19 @@
 		/**
 		 * @return string
 		 */
-		public function serviceVersion(){
+		public function serviceVersion() {
 			$response = $this->callConnectApi(array('action' => 'common-info'));
+
 			return (string)$response->common->version;
 		}
 
 		/**
-		 * TODO: Add URL to config
-		 * Get invitation URL to the ConnectAdmin Dataporten group
-		 * @return string
+		 * Get invitation URL to the ConnectAdmin Dataporten group.
+		 *
+		 * Returns false if logged on user is not member of group.
+		 * @return mixed
 		 */
-		public function serviceInvitationURL(){
-			return "MÅ GJØRES!";
+		public function serviceInvitationURL() {
+			return $this->dataporten->groupInvitationURL();
 		}
 	}
