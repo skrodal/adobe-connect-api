@@ -15,6 +15,8 @@
 	class Connect {
 		private $dataporten, $config;
 		use GroupsTrait, MeetingsTrait, OrgsTrait, RoomsTrait, ServiceTrait, UsersTrait;
+		private $CACHE = true;
+		private $CACHE_TTL = 180; // 3min
 
 		// Traits
 		function __construct(Dataporten $dataPorten) {
@@ -22,6 +24,7 @@
 			$this->config     = Config::getConfigFromFile(Config::get('auth')['adobe_connect']);
 			$this->dataporten = $dataPorten;
 			// Todo: run a usercheck (org)
+			if(!$this->CACHE) { apc_clear_cache(); apc_clear_cache('user'); }
 		}
 
 		/**
@@ -55,22 +58,20 @@
 		 * @return boolean
 		 */
 		private function getSessionAuthCookie() {
-			if(!empty($_SESSION['ac-auth-cookie'])) {
-				Utils::log('Info: Have a cookie');
-				return $_SESSION['ac-auth-cookie'];
+			if(!apc_exists('AC.COOKIE')) {
+				//
+				$url     = $this->config['connect-api-base'] . 'action=login&login=' . $this->config['connect-api-userid'] . '&password=' . $this->config['connect-api-passwd'];
+				$headers = get_headers($url, 1);
+				// Look for the session cookie from AC
+				if(!isset($headers['Set-Cookie'])) {
+					Response::error(401, "Error when authenticating to the Adobe Connect API using client API credentials. Set-Cookie not present in response");
+				}
+				// Extract session cookie and store in session
+				$acSessionCookie            = substr($headers['Set-Cookie'], strpos($headers['Set-Cookie'], '=') + 1);
+				$cookie = substr($acSessionCookie, 0, strpos($acSessionCookie, ';'));
+				apc_store('AC.COOKIE', $cookie, $this->CACHE_TTL);
 			}
-			//
-			$url     = $this->config['connect-api-base'] . 'action=login&login=' . $this->config['connect-api-userid'] . '&password=' . $this->config['connect-api-passwd'];
-			$headers = get_headers($url, 1);
-			// Look for the session cookie from AC
-			if(!isset($headers['Set-Cookie'])) {
-				Response::error(401, "Error when authenticating to the Adobe Connect API using client API credentials. Set-Cookie not present in response");
-			}
-			// Extract session cookie and store in session
-			$acSessionCookie            = substr($headers['Set-Cookie'], strpos($headers['Set-Cookie'], '=') + 1);
-			$_SESSION['ac-auth-cookie'] = substr($acSessionCookie, 0, strpos($acSessionCookie, ';'));
-
-			return $_SESSION['ac-auth-cookie'];
+			return apc_fetch('AC.COOKIE');
 		}
 
 		function checkConnectResponse($action, $response) {
