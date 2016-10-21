@@ -17,13 +17,13 @@
 
 	use Connect\Router\Router;
 	use Connect\Utils\Utils;
-
-	// Init
-	$router = new Router();
-
+	
 	if(!empty($_SESSION['test'])) {
 		Utils::log($_SESSION['test']);
 	} else {
 		$_SESSION['test'] = "Session is set";
 		Utils::log("SESSION NOT SET!");
 	}
+	// Init
+	$router = new Router();
+
