@@ -9,6 +9,7 @@
 
 	use Connect\Conf\Config;
 	use Connect\Utils\Response;
+	use Connect\Utils\Utils;
 
 	class Dataporten {
 
@@ -73,6 +74,7 @@
 
 		public function isConnectAdmin() {
 			$membership = $this->protectedRequest("https://groups-api.dataporten.no/groups/me/groups?query=ConnectAdmin");
+			Utils::log(json_encode($membership));
 			if (isset($membership['displayname'])){
 				return strcasecmp($membership['displayname'], 'ConnectAdmin') == 0 ? true : false;
 			}
