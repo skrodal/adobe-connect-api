@@ -21,7 +21,6 @@
 			// Will exit on fail
 			$this->config     = Config::getConfigFromFile(Config::get('auth')['adobe_connect']);
 			$this->dataporten = $dataPorten;
-			Utils::log(json_encode($_SESSION));
 			// Todo: run a usercheck (org)
 
 		}
