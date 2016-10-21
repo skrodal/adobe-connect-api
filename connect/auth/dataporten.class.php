@@ -73,7 +73,7 @@
 		*/
 
 		public function isConnectAdmin() {
-			$membership = $this->protectedRequest("https://groups-api.dataporten.no/groups/me/groups?query=ConnectAdmin");
+			$membership = $this->protectedRequest("https://groups-api.dataporten.no/groups/me/groups/" . $this->config['connect-group-id']);
 			Utils::log(json_encode($membership));
 			if (isset($membership['displayname'])){
 				return strcasecmp($membership['displayname'], 'ConnectAdmin') == 0 ? true : false;
