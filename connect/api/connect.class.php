@@ -59,6 +59,7 @@
 		 */
 		private function getSessionAuthCookie() {
 			if(!apc_exists('AC.COOKIE')) {
+				Utils::log("Generating new cookie");
 				//
 				$url     = $this->config['connect-api-base'] . 'action=login&login=' . $this->config['connect-api-userid'] . '&password=' . $this->config['connect-api-passwd'];
 				$headers = get_headers($url, 1);
