@@ -74,12 +74,11 @@
 
 		public function isConnectAdmin() {
 			$membership = $this->protectedRequest("https://groups-api.dataporten.no/groups/me/groups/" . $this->config['connect-group-id']);
-			Utils::log(json_encode($membership));
 			return $membership;
 		}
 
 		public function groupInvitationURL(){
-			return is_null($this->isConnectAdmin()) ? null : $this->config['connect-group-invitation-url'];
+			return !$this->isConnectAdmin() ? false : $this->config['connect-group-invitation-url'];
 		}
 
 
@@ -97,6 +96,7 @@
 			);
 			$context = stream_context_create($opts);
 			$result  = file_get_contents($url, false, $context);
+			Utils::log(json_decode($result, true));
 			return $result ? json_decode($result, true) : false;
 		}
 		/* Not used
