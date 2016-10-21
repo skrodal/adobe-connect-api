@@ -1,4 +1,5 @@
 <?php
+	session_start();
 	/**
 	 * Required scope:
 	 *    - admin
