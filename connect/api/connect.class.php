@@ -6,7 +6,7 @@
 	 * @since  October 2016
 	 */
 	namespace Connect\Api;
-
+	session_start();
 	use Connect\Auth\Dataporten;
 	use Connect\Conf\Config;
 	use Connect\Utils\Response;
@@ -56,7 +56,7 @@
 		 * @return boolean
 		 */
 		private function getSessionAuthCookie() {
-			if(isset($_SESSION['ac-auth-cookie'])) {
+			if(!empty($_SESSION['ac-auth-cookie'])) {
 				return $_SESSION['ac-auth-cookie'];
 			}
 			Utils::log('Info: Creating new session.');
