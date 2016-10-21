@@ -7,8 +7,6 @@
 	 */
 	namespace Connect\Api;
 
-	session_start();
-
 	use Connect\Auth\Dataporten;
 	use Connect\Conf\Config;
 	use Connect\Utils\Response;
