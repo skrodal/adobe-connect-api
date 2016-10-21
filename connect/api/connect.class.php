@@ -22,7 +22,6 @@
 			$this->config     = Config::getConfigFromFile(Config::get('auth')['adobe_connect']);
 			$this->dataporten = $dataPorten;
 			// Todo: run a usercheck (org)
-			Utils::log(json_encode($_REQUEST));
 		}
 
 		/**

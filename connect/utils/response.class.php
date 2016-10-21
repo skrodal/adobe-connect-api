@@ -11,8 +11,8 @@
 
 		public static function result($result) {
 			// Ensure no caching occurs on server (correct for HTTP/1.1)
-			header('Cache-Control: must-revalidate');
-			header("Expires: Fri, 10 Oct 1980 04:00:00 GMT"); // Date in the past
+			//header('Cache-Control: no-cache, no-store, must-revalidate');
+			//header("Expires: Fri, 10 Oct 1980 04:00:00 GMT"); // Date in the past
 			// CORS
 			header("Access-Control-Allow-Origin: *");
 			header("Access-Control-Allow-Credentials: true");
