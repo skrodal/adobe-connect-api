@@ -6,7 +6,7 @@
 	 * @since  October 2016
 	 */
 	namespace Connect\Api;
-	session_start();
+
 	use Connect\Auth\Dataporten;
 	use Connect\Conf\Config;
 	use Connect\Utils\Response;
@@ -56,9 +56,9 @@
 		 */
 		private function getSessionAuthCookie() {
 			if(!empty($_SESSION['ac-auth-cookie'])) {
+				Utils::log('Info: Have a cookie');
 				return $_SESSION['ac-auth-cookie'];
 			}
-			Utils::log('Info: Creating new session.');
 			//
 			$url     = $this->config['connect-api-base'] . 'action=login&login=' . $this->config['connect-api-userid'] . '&password=' . $this->config['connect-api-passwd'];
 			$headers = get_headers($url, 1);
