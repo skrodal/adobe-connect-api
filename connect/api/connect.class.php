@@ -1,5 +1,4 @@
 <?php
-	session_start();
 	/**
 	 * Provides responses for all routes.
 	 *
@@ -7,6 +6,8 @@
 	 * @since  October 2016
 	 */
 	namespace Connect\Api;
+
+	session_start();
 
 	use Connect\Auth\Dataporten;
 	use Connect\Conf\Config;
