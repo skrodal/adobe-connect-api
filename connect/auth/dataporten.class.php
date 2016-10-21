@@ -13,7 +13,7 @@
 
 	class Dataporten {
 
-		private $config; // $userGroups;
+		private $config;
 
 		// private $userInfo;
 
@@ -75,10 +75,7 @@
 		public function isConnectAdmin() {
 			$membership = $this->protectedRequest("https://groups-api.dataporten.no/groups/me/groups/" . $this->config['connect-group-id']);
 			Utils::log(json_encode($membership));
-			if (isset($membership['displayname'])){
-				return strcasecmp($membership['displayname'], 'ConnectAdmin') == 0 ? true : false;
-			}
-			return null;
+			return $membership;
 		}
 
 		public function groupInvitationURL(){
@@ -100,8 +97,7 @@
 			);
 			$context = stream_context_create($opts);
 			$result  = file_get_contents($url, false, $context);
-			$data = json_decode($result, true);
-			return $data;
+			return $result ? json_decode($result, true) : false;
 		}
 		/* Not used
 			public function userAffiliation() {
