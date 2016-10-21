@@ -15,6 +15,11 @@
 	require_once('connect/autoload.php');
 
 	use Connect\Router\Router;
+	use Connect\Utils\Utils;
 
 	// Init
 	$router = new Router();
+
+	if (!is_writable(session_save_path())) {
+		Utils::log( 'Session path "'.session_save_path().'" is not writable for PHP!' );
+	}
