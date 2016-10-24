@@ -53,7 +53,7 @@
 			}
 
 			// Make the call
-			$response    = $this->callConnectApi($request);
+			$apiResponse    = $this->callConnectApi($request);
 
 			$uniqueRoomAndUserCount['from_timestamp'] = (int)$start_timestamp;
 			$uniqueRoomAndUserCount['to_timestamp']   = (int)$end_timestamp;
@@ -65,7 +65,7 @@
 			$roomAndUserCountByDate = [];
 
 			// Collect info from each meeting
-			foreach($response->{'report-bulk-consolidated-transactions'}->row as $meeting) {
+			foreach($apiResponse->{'report-bulk-consolidated-transactions'}->row as $meeting) {
 				// Only count completed meetings
 				if(isset($meeting->{'date-closed'})) {
 					//
@@ -111,16 +111,16 @@
 
 
 			// Totals summary
-			$uniqueRoomAndUserCount['sessions']     = count($response->{'report-bulk-consolidated-transactions'}->row);
+			$uniqueRoomAndUserCount['sessions']     = count($apiResponse->{'report-bulk-consolidated-transactions'}->row);
 			$uniqueRoomAndUserCount['rooms']        = count($uniqueRoomAndUserCount['rooms']);
 			$uniqueRoomAndUserCount['users']        = count($uniqueRoomAndUserCount['users']);
 			$uniqueRoomAndUserCount['duration_sec'] = $uniqueRoomAndUserCount['duration_sec'];
 
-			$response['requested_org'] = is_null($org) ? 'Alle' : $org;
-			$response['summary'] = $uniqueRoomAndUserCount;
-			$response['daily'] = $roomAndUserCountByDate;
+			$apiResponse['requested_org'] = is_null($org) ? 'Alle' : $org;
+			$apiResponse['summary'] = $uniqueRoomAndUserCount;
+			$apiResponse['daily'] = $roomAndUserCountByDate;
 
-			return $response;
+			return $apiResponse;
 		}
 
 	}
