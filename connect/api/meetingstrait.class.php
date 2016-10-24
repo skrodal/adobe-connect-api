@@ -41,7 +41,7 @@
 			            'filter-type'            => 'meeting',
 			            'filter-gt-date-created' => $range_start,
 			            'filter-lt-date-created' => $range_end,
-			            'sort-date'              => 'asc'
+			            'sort-date-closed'       => 'asc'
 			];
 
 			if(!is_null($org)){
