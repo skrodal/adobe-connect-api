@@ -40,7 +40,8 @@
 			$request = ['action'                 => 'report-bulk-consolidated-transactions',
 			            'filter-type'            => 'meeting',
 			            'filter-gt-date-created' => $range_start,
-			            'filter-lt-date-created' => $range_end
+			            'filter-lt-date-created' => $range_end,
+			            'sort-date'              => 'asc'
 			];
 
 			if(!is_null($org)){
@@ -119,8 +120,6 @@
 			$response['requested_org'] = is_null($org) ? 'Alle' : $org;
 			$response['summary'] = $uniqueRoomAndUserCount;
 			$response['daily'] = $roomAndUserCountByDate;
-
-			ksort($response['daily']);
 
 			return $response;
 		}
