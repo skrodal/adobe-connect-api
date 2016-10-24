@@ -116,11 +116,11 @@
 			$uniqueRoomAndUserCount['users']        = count($uniqueRoomAndUserCount['users']);
 			$uniqueRoomAndUserCount['duration_sec'] = $uniqueRoomAndUserCount['duration_sec'];
 
-			$apiResponse['requested_org'] = is_null($org) ? 'Alle' : $org;
-			$apiResponse['summary'] = $uniqueRoomAndUserCount;
-			$apiResponse['daily'] = $roomAndUserCountByDate;
+			$response['requested_org'] = is_null($org) ? 'Alle' : $org;
+			$response['summary'] = $uniqueRoomAndUserCount;
+			$response['daily'] = $roomAndUserCountByDate;
 
-			return $apiResponse;
+			return $response;
 		}
 
 	}
