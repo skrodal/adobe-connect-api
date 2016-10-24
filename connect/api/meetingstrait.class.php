@@ -50,7 +50,7 @@
 					$org = $this->dataporten->userOrgId();
 				}
 				// Add org-filter
-				$request['filter-login-like'] = $org;
+				$request['filter-like-login'] = $org;
 			}
 
 			// Make the call

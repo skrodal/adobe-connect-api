@@ -71,7 +71,7 @@
 				array('GET', '/meetings/stats/from/[i:from]/to/[i:to]/', function ($from, $to) {
 					Response::result($this->connect->meetingsStatsInPeriod($from, $to));
 				}, 'Meeting stats (users, rooms, sessions, duration) within a time period (defined by timestamps)'),
-				array('GET', '/meetings/stats/from/[i:from]/to/[i:to]/org/[org:orgId]', function ($from, $to, $orgId) {
+				array('GET', '/meetings/stats/from/[i:from]/to/[i:to]/org/[org:orgId]/', function ($from, $to, $orgId) {
 					Response::result($this->connect->meetingsStatsInPeriod($from, $to, $orgId));
 				}, 'Meeting stats for specific org (users, rooms, sessions, duration) within a time period (defined by timestamps)'),
 			]);
