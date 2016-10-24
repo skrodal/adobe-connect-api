@@ -120,6 +120,8 @@
 			$response['summary'] = $uniqueRoomAndUserCount;
 			$response['daily'] = $roomAndUserCountByDate;
 
+			ksort($response['daily']);
+
 			return $response;
 		}
 
