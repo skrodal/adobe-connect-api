@@ -43,7 +43,7 @@
 			            'filter-lt-date-created' => $range_end
 			];
 
-			if(!_is_null($org)){
+			if(!is_null($org)){
 				if(!$this->dataporten->isSuperAdmin) {
 					// If not SuperAdmin, default back to logged in user's org
 					$org = $this->dataporten->userOrgId();
