@@ -80,7 +80,7 @@
 					$rooms[$i]['id']          = (string)$room->attributes()->{'sco-id'};
 					$rooms[$i]['name']        = (string)$room->name;
 					$rooms[$i]['description'] = (string)$room->description;
-					$rooms[$i]['url-path']    = $room->{'url-path'};
+					$rooms[$i]['url-path']    = (string)$room->{'url-path'};
 					$rooms[$i]['created']     = strtolower(date("d.m.Y, H:i", $timestamp_created));
 					$rooms[$i]['modified']    = strtolower(date("d.m.Y, H:i", $timestamp_modified));
 					$i++;
