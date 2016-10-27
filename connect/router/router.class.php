@@ -85,7 +85,16 @@
 				//
 				array('GET', '/orgs/users/count/', function () {
 					Response::result($this->connect->orgsUserCount());
-				}, 'Number of users per org')
+				}, 'Number of users per org {org : count}'),
+				array('GET', '/org/[org:orgName]/users/', function ($orgName) {
+					$response = $this->connect->orgUsers($orgName);
+					Response::result($response);
+				}, 'All user accounts at org'),
+				//
+				array('GET', '/org/[org:orgName]/users/count/', function ($orgName) {
+					$response = $this->connect->usersCount($orgName);
+					Response::result($response);
+				}, 'Total number of user accounts pertaining to a specific org.')
 			]);
 		}
 
@@ -159,12 +168,7 @@
 				array('GET', '/users/maxconcurrent/count/since-days/[i:days]/', function ($days) {
 					$response = $this->connect->usersMaxConcurrent($days);
 					Response::result($response);
-				}, 'Maximum number of users in Adobe Connect meetings concurrently in the last {days}.'),
-				//
-				array('GET', '/users/[org:orgName]/count/', function ($orgName) {
-					$response = $this->connect->usersCount($orgName);
-					Response::result($response);
-				}, 'Total number of user accounts pertaining to a specific org.')
+				}, 'Maximum number of users in Adobe Connect meetings concurrently in the last {days}.')
 			]);
 		}
 
