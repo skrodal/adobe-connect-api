@@ -90,14 +90,18 @@
 						Response::error(400, "Request [$action] failed: [$responseCode] " . (string)$response->status->attributes()->subcode);
 						break;
 					case 'no-data'      :
-						Response::error(400, "Request [$action] failed [$responseCode]: There is no data available (in response to an action that would normally result in returning data)");
+						Response::error(400, "Request [$action] failed [$responseCode]: No data available");
 						break;
 					case 'too-much-data':
-						Response::error(400, "Request [$action] failed [$responseCode]: Too much data - the action should have returned a single result but is actually returning multiple results");
+						Response::error(400, "Request [$action] failed [$responseCode]: Expected a single result, but got multiple");
+						break;
+					case 'operation-size-error':
+						Response::error(400, "Request [$action] failed [$responseCode]: Please limit your request (e.g. date range)");
 						break;
 					// Generic (non-existing) error (future-proofing, in case of changes to Connect WebServices)
 					default             :
 						Response::error(400, "Request [$action] failed [$responseCode]: An unknown error occurred");
+						break;
 				}
 			} else {
 				// XML response false:
