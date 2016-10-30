@@ -1,6 +1,6 @@
 <?php
 
-	namespace connect\vendor;
+	namespace Connect\Vendor;
 
 
 	/**
