@@ -1,6 +1,7 @@
 <?php
 	namespace Connect\Api;
 
+	use Connect\Utils\Utils;
 	use Connect\Vendor\JWT;
 
 	trait ServiceTrait {
@@ -33,6 +34,7 @@
 			$response['access'] = ['orgadmin' => false, 'superadmin' => false, 'role' => 'Gjest', 'desc' => 'Begrenset tilgang til informasjon'];
 			// Store AC session cookie as a JWT, using Dataporten's token as key
 			$response['access']['ac_token'] = JWT::encode($this->getSessionAuthCookie(), $_SERVER['HTTP_X_DATAPORTEN_TOKEN']);
+			Utils::log ("Encoding ac_token with DP token: " . $_SERVER['HTTP_X_DATAPORTEN_TOKEN']);
 			//
 			$url = $this->dataporten->groupInvitationURL();
 			//

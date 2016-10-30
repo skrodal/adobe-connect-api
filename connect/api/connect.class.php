@@ -10,6 +10,7 @@
 	use Connect\Auth\Dataporten;
 	use Connect\Conf\Config;
 	use Connect\Utils\Response;
+	use Connect\Utils\Utils;
 	use Connect\Vendor\JWT;
 
 	class Connect {
@@ -40,6 +41,9 @@
 			if(isset($this->ac_token) && !empty($this->ac_token)) {
 				// Decode JWT token with same key used for encode
 				$params['session'] = JWT::decode($this->ac_token, $_SERVER['HTTP_X_DATAPORTEN_TOKEN']);
+				Utils::log ("Received ac_token is: " . $this->ac_token);
+				Utils::log ("Decoding ac_token with DP token: " . $_SERVER['HTTP_X_DATAPORTEN_TOKEN']);
+				exit();
 				try {
 					// Make the call
 					$response = simplexml_load_file($url);
