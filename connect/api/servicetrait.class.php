@@ -1,6 +1,8 @@
 <?php
 	namespace Connect\Api;
 
+	use Connect\Vendor\JWT;
+
 	trait ServiceTrait {
 
 		/**
@@ -34,16 +36,16 @@
 			//
 			$url = $this->dataporten->groupInvitationURL();
 			//
-			if($url !== false){
-				$response['access']['orgadmin'] = true;
+			if($url !== false) {
+				$response['access']['orgadmin']         = true;
 				$response['access']['group-invitation'] = $url;
-				$response['access']['role'] = 'OrgAdmin';
-				$response['access']['desc'] = 'Tilgang til informasjon om din organisasjon og globale tall)';
+				$response['access']['role']             = 'OrgAdmin';
+				$response['access']['desc']             = 'Tilgang til informasjon om din organisasjon og globale tall)';
 			}
-			if($this->dataporten->isSuperAdmin()){
+			if($this->dataporten->isSuperAdmin()) {
 				$response['access']['superadmin'] = true;
-				$response['access']['role'] = 'SuperAdmin';
-				$response['access']['desc'] = 'Sjef! Du har tilgang til alt :)';
+				$response['access']['role']       = 'SuperAdmin';
+				$response['access']['desc']       = 'Sjef! Du har tilgang til alt :)';
 			}
 
 			return $response;

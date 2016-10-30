@@ -9,7 +9,6 @@
 
 	use Connect\Conf\Config;
 	use Connect\Utils\Response;
-	use Connect\Utils\Utils;
 
 	class Dataporten {
 
@@ -73,41 +72,26 @@
 		*/
 
 		/**
-		 * Check membership in ConnectAdmin Dataporten group. Returns membership or false.
-		 * @return bool|mixed
-		 */
-		public function isConnectAdmin() {
-			$membership = $this->protectedRequest("https://groups-api.dataporten.no/groups/me/groups/" . $this->config['connect-group-id']);
-			return $membership;
-		}
-
-		/**
 		 * If member of ConnectAdmin Dataporten group, return invitation url
 		 * @return bool
 		 */
-		public function groupInvitationURL(){
-			if($this->isSuperAdmin() || $this->isConnectAdmin() !== false){
+		public function groupInvitationURL() {
+			if($this->isSuperAdmin() || $this->isConnectAdmin() !== false) {
 				return $this->config['connect-group-invitation-url'];
 			}
+
 			return false;
 		}
 
+		public function isSuperAdmin() {
+			return strcasecmp($this->userOrgId(), "uninett.no") === 0;
+		}
 
-		private function protectedRequest($url) {
-			$token = $_SERVER['HTTP_X_DATAPORTEN_TOKEN'];
-			if(empty($token)) {
-				Response::error(403, "Access denied: Dataporten token missing.");
-			}
+		public function userOrgId() {
+			$userOrg = explode('@', $this->feideUsername());
 
-			$opts    = array(
-				'http' => array(
-					'method' => 'GET',
-					'header' => "Authorization: Bearer " . $token,
-				),
-			);
-			$context = stream_context_create($opts);
-			$result  = file_get_contents($url, false, $context);
-			return $result ? json_decode($result, true) : false;
+			// e.g. 'uninett.no'
+			return $userOrg[1];
 		}
 		/* Not used
 			public function userAffiliation() {
@@ -141,16 +125,6 @@
 		}
 		 */
 
-		public function isSuperAdmin() {
-			return strcasecmp($this->userOrgId(), "uninett.no") === 0;
-		}
-
-		public function userOrgId() {
-			$userOrg = explode('@', $this->feideUsername());
-			// e.g. 'uninett.no'
-			return $userOrg[1];
-		}
-
 		public function feideUsername() {
 			return $this->getFeideUsername();
 		}
@@ -183,9 +157,38 @@
 			return $userIdSec;
 		}
 
+		/**
+		 * Check membership in ConnectAdmin Dataporten group. Returns membership or false.
+		 * @return bool|mixed
+		 */
+		public function isConnectAdmin() {
+			$membership = $this->protectedRequest("https://groups-api.dataporten.no/groups/me/groups/" . $this->config['connect-group-id']);
+
+			return $membership;
+		}
+
+		private function protectedRequest($url) {
+			$token = $_SERVER['HTTP_X_DATAPORTEN_TOKEN'];
+			if(empty($token)) {
+				Response::error(403, "Access denied: Dataporten token missing.");
+			}
+
+			$opts    = array(
+				'http' => array(
+					'method' => 'GET',
+					'header' => "Authorization: Bearer " . $token,
+				),
+			);
+			$context = stream_context_create($opts);
+			$result  = file_get_contents($url, false, $context);
+
+			return $result ? json_decode($result, true) : false;
+		}
+
 		public function userOrgName() {
 			$userOrg = explode('@', $this->feideUsername());
 			$userOrg = explode('.', $userOrg[1]);
+
 			// e.g. 'uninett'
 			return $userOrg[0];
 		}
