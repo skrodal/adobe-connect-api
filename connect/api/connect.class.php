@@ -10,6 +10,7 @@
 	use Connect\Auth\Dataporten;
 	use Connect\Conf\Config;
 	use Connect\Utils\Response;
+	use Connect\Vendor\JWT;
 
 	class Connect {
 		private $dataporten, $config, $ac_token;
