@@ -10,21 +10,19 @@
 	use Connect\Auth\Dataporten;
 	use Connect\Conf\Config;
 	use Connect\Utils\Response;
-	use Connect\Utils\Utils;
 
 	class Connect {
-		private $dataporten, $config;
+		private $dataporten, $config, $ac_token;
 		use GroupsTrait, MeetingsTrait, OrgsTrait, RoomsTrait, ServiceTrait, UsersTrait;
-		private $CACHE = true;
-		private $CACHE_TTL = 180; // 3min
+
 
 		// Traits
 		function __construct(Dataporten $dataPorten) {
 			// Will exit on fail
 			$this->config     = Config::getConfigFromFile(Config::get('auth')['adobe_connect']);
 			$this->dataporten = $dataPorten;
-			// Todo: run a usercheck (org)
-			if(!$this->CACHE) { apc_clear_cache(); apc_clear_cache('user'); }
+			// Get JWT token from client (if set)
+			$this->ac_token = htmlspecialchars($_GET["ac_token"]);
 		}
 
 		/**
@@ -35,44 +33,26 @@
 		 * @return SimpleXMLElement
 		 */
 		private function callConnectApi($params = array()) {
-			$params['session'] = $this->getSessionAuthCookie();
-			$action            = $params['action'];
-			$url               = $this->config['connect-api-base'] . http_build_query($params);
-			$response          = false;
-			try {
-				// Make the call
-				$response = simplexml_load_file($url);
-				// Will check the response for a status of OK, or return an error otherwise
-				$this->checkConnectResponse($action, $response);
-			} catch(Exception $e) {
-				Response::error(400, "API request [$action] failed: " . $e->getMessage());
-			}
-
-			return $response;
-		}
-
-		/**
-		 * Authenticate API user on AC service and grab returned cookie. If auth already in place, return cookie.
-		 *
-		 * @throws Exception
-		 * @return boolean
-		 */
-		private function getSessionAuthCookie() {
-			if(!apc_exists('AC.COOKIE')) {
-				Utils::log("Generating new cookie");
-				//
-				$url     = $this->config['connect-api-base'] . 'action=login&login=' . $this->config['connect-api-userid'] . '&password=' . $this->config['connect-api-passwd'];
-				$headers = get_headers($url, 1);
-				// Look for the session cookie from AC
-				if(!isset($headers['Set-Cookie'])) {
-					Response::error(401, "Error when authenticating to the Adobe Connect API using client API credentials. Set-Cookie not present in response");
+			$action   = $params['action'];
+			$url      = $this->config['connect-api-base'] . http_build_query($params);
+			$response = false;
+			if(isset($this->ac_token) && !empty($this->ac_token)) {
+				// Decode JWT token with same key used for encode
+				$params['session'] = JWT::decode($this->ac_token, $_SERVER['HTTP_X_DATAPORTEN_TOKEN']);
+				try {
+					// Make the call
+					$response = simplexml_load_file($url);
+					// Will check the response for a status of OK, or return an error otherwise
+					$this->checkConnectResponse($action, $response);
+				} catch(Exception $e) {
+					Response::error(400, "API request [$action] failed: " . $e->getMessage());
 				}
-				// Extract session cookie and store in session
-				$acSessionCookie            = substr($headers['Set-Cookie'], strpos($headers['Set-Cookie'], '=') + 1);
-				$cookie = substr($acSessionCookie, 0, strpos($acSessionCookie, ';'));
-				apc_store('AC.COOKIE', $cookie, $this->CACHE_TTL);
+
+				return $response;
+			} else {
+				// The client did not provide a JWT token with the request
+				Response::error(400, "API request [$action] failed: Client did not provide the ac_token for auth");
 			}
-			return apc_fetch('AC.COOKIE');
 		}
 
 		function checkConnectResponse($action, $response) {
@@ -107,5 +87,25 @@
 				// XML response false:
 				Response::error(400, "Request [$action] failed: No response from the Adobe Connect Server. Please check that the service is running.");
 			}
+		}
+
+		/**
+		 * Authenticate API user on AC service and grab returned cookie. If auth already in place, return cookie.
+		 *
+		 * @throws Exception
+		 * @return boolean
+		 */
+		private function getSessionAuthCookie() {
+			$url     = $this->config['connect-api-base'] . 'action=login&login=' . $this->config['connect-api-userid'] . '&password=' . $this->config['connect-api-passwd'];
+			$headers = get_headers($url, 1);
+			// Look for the session cookie from AC
+			if(!isset($headers['Set-Cookie'])) {
+				Response::error(401, "Error when authenticating to the Adobe Connect API using client API credentials. Set-Cookie not present in response");
+			}
+			// Extract session cookie and store in session
+			$acSessionCookie = substr($headers['Set-Cookie'], strpos($headers['Set-Cookie'], '=') + 1);
+			$cookie          = substr($acSessionCookie, 0, strpos($acSessionCookie, ';'));
+
+			return $cookie;
 		}
 	}
