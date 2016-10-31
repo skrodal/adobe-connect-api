@@ -10,7 +10,6 @@
 	use Connect\Auth\Dataporten;
 	use Connect\Conf\Config;
 	use Connect\Utils\Response;
-	use Connect\Utils\Utils;
 	use Connect\Vendor\JWT;
 
 	class Connect {
@@ -35,14 +34,14 @@
 		 * @return SimpleXMLElement
 		 */
 		private function callConnectApi($params = array()) {
-			$action   = $params['action'];
-			$url      = $this->config['connect-api-base'] . http_build_query($params);
-			$response = false;
+			$action = $params['action'];
+			// Client must pass a token for AC call to be allowed
 			if(isset($this->ac_token) && !empty($this->ac_token)) {
 				// Decode JWT token with same key used for encode
 				$params['session'] = JWT::decode($this->ac_token, $_SERVER['HTTP_X_DATAPORTEN_TOKEN']);
-				Utils::log ("Decoded Cookie is: " . JWT::decode($this->ac_token, $_SERVER['HTTP_X_DATAPORTEN_TOKEN']));
-				exit();
+				$url               = $this->config['connect-api-base'] . http_build_query($params);
+				$response          = false;
+
 				try {
 					// Make the call
 					$response = simplexml_load_file($url);

@@ -33,9 +33,8 @@
 			}
 			$response['access'] = ['orgadmin' => false, 'superadmin' => false, 'role' => 'Gjest', 'desc' => 'Begrenset tilgang til informasjon'];
 			// Store AC session cookie as a JWT, using Dataporten's token as key
-			$cookie = $this->getSessionAuthCookie();
+			$cookie                         = $this->getSessionAuthCookie();
 			$response['access']['ac_token'] = JWT::encode($cookie, $_SERVER['HTTP_X_DATAPORTEN_TOKEN']);
-			Utils::log ("Cookie is: " . $cookie);
 			//
 			$url = $this->dataporten->groupInvitationURL();
 			//
