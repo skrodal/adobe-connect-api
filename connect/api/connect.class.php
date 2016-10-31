@@ -23,7 +23,7 @@
 			$this->config     = Config::getConfigFromFile(Config::get('auth')['adobe_connect']);
 			$this->dataporten = $dataPorten;
 			// Get JWT token from client (if set)
-			$this->ac_token = htmlspecialchars($_GET["ac_token"]);
+			$this->ac_token = isset($_GET["ac_token"]) ? htmlspecialchars($_GET["ac_token"]) : null;
 		}
 
 		/**
