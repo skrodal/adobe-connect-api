@@ -1,10 +1,10 @@
-# Adobe Connect API proxy
+# Adobe Connect Web Services Proxy (API)
 
-**NOTE: Created to suit higher education in Norway; makes use of Dataporten (UNINETT) for client/user (O)Authentication.** 
+*Note: This API is developed by UNINETT AS and is tailor-made to suit higher education in Norway. 
+It caters for an in-house developed client pertaining to a specific use-case and relies heavily on UNINETT Dataporten (for OAuth). 
+Dependencies also require access to a self-hosted instance of Adobe Connect.*  
 
-This API facilitates extraction of data from Adobe Connect Web Services (API) for statistical purposes. 
-
-By implementing using Dataporten (OAuth), this API adds an extra layer of control (access, scopes) as well as simplifies reuse.   
+This API facilitates extraction of data (READ-ONLY) from (a self-hosted) Adobe Connect Web Services (API) for information/statistical purposes. 
 
 ## Installation
 
@@ -18,6 +18,10 @@ By implementing using Dataporten (OAuth), this API adds an extra layer of contro
 
 - UNINETT Dataporten
 - Alto Router
+- JWT (JSON Web Token) implementation as described [here](https://coderwall.com/p/8wrxfw/goodbye-php-sessions-hello-json-web-tokens)
 
-— by Simon Skrødal, 2016
+## Client 
+
+Code/docs for the client, `ConnectAdmin`, for which this API was developed may be [found here](https://github.com/skrodal/adobe-connect-admin) 
+Developed by Simon Skrødal, October 2016 
  
